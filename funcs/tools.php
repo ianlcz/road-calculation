@@ -1,12 +1,12 @@
 <?php
     /**
-     * Retrieve on a site the distance in meter between two cities
+     * Recovery on a site the distance in meter between two cities
      *
      * @param string $departureCity
      * @param string $arrivalCity
      * @return float
      */
-    function retrieve_distance(string $departureCity, string $arrivalCity):float
+    function recovery_distance(string $departureCity, string $arrivalCity):float
     {
         // Processing to extracte data from the code of the page
         $data = explode('<div class="value">', file_get_contents('https://www.bonnesroutes.com/distance/?from=' . $departureCity . '&to=' . $arrivalCity));
@@ -14,10 +14,17 @@
         $data = explode('</div>', $data[3]);
 
         // If the distance exceeds the hundreds
-        if(strlen($data[0]) > 3 AND strlen($data[0]) <= 6)
+        if(strlen($data[0]) > 6)
         {
             $dataTable = str_split($data[0]);
-            $data = $dataTable[0].$dataTable[3].$dataTable[4].$dataTable[5];
+            $data = $dataTable[0] . $dataTable[1] . $dataTable[4] . $dataTable[5] . $dataTable[6];
+            return floatval($data) * 1000;
+        }
+        // If the distance exceeds the hundreds
+        else if(strlen($data[0]) > 3 AND strlen($data[0]) <= 6)
+        {
+            $dataTable = str_split($data[0]);
+            $data = $dataTable[0] . $dataTable[3] . $dataTable[4] . $dataTable[5];
             return floatval($data) * 1000;
         }
         else
@@ -33,9 +40,39 @@
      * @param float $number
      * @return float
      */
-    function convert_kmh_to_ms(float $number):float
+    function convert_kmh_to_ms(float $speed):float
     {
-        return $number * 1000 / 3600;
+        return $speed * 1000 / 3600;
+    }
+
+    function time_format(float $time)
+    {
+        if (intval($time / 3600) >= 24)
+        {
+            return "<strong style='margin-right: 12px;'>". strftime("%eJ", $time) . "</strong>" . strftime("%H : %M", $time);
+        }
+        else
+        {
+            return strftime("%H : %M", $time);
+        }
+    }
+    /**
+     * Calculate the number of breaks that the driver makes during the carry
+     *
+     * @param string $departureCity
+     * @param string $arrivalCity
+     * @return integer
+     */
+    function calculate_number_of_break(string $departureCity, string $arrivalCity):int
+    {
+        // Recovery the $timeToAccelerateOrDecelerate and $traveledDistance variables defined in the calculate_time function
+        global $timeToAccelerateOrDecelerate, $traveledDistance;
+        // Calculate the remaining distance to travel
+        $remainingDistance = recovery_distance($departureCity, $arrivalCity) - $traveledDistance;
+        // Full time to travel this distance without breaks
+        $timeWithoutBreak = 2 * $timeToAccelerateOrDecelerate + $remainingDistance / convert_kmh_to_ms(90);
+        // Calculates the number of breaks to be made during the carry
+        return intval($timeWithoutBreak / (2 * 3600));
     }
 
     /**
@@ -50,25 +87,21 @@
         // Calculate the time needed to accelerate or deccelerate
         $timeToAccelerateOrDecelerate = convert_kmh_to_ms(90) / convert_kmh_to_ms(10) * 60;
         // Calculate the distance traveled during acceleration and deceleration
-        $traveledDistance = 1/2 * (convert_kmh_to_ms(90)/$timeToAccelerateOrDecelerate) * pow($timeToAccelerateOrDecelerate, 2) * 2;
+        $traveledDistance = 1/2 * (convert_kmh_to_ms(90) / $timeToAccelerateOrDecelerate) * pow($timeToAccelerateOrDecelerate, 2) * 2;
         // Calculate the average speed
         $averageSpeed = $traveledDistance / ($timeToAccelerateOrDecelerate * 2);
         // Calculate the travel time without a break if the distance is less than the distance traveled
-        if(retrieve_distance($departureCity, $arrivalCity) < $traveledDistance)
+        if(recovery_distance($departureCity, $arrivalCity) < $traveledDistance)
         {
-            return $timeWithoutBreak = retrieve_distance($departureCity, $arrivalCity) / $averageSpeed;
+            return recovery_distance($departureCity, $arrivalCity) / $averageSpeed;
         }
         // Otherwise calculate the travel time with breaks
         else
         {
-            // Calculate the remaining distance to travel
-            $remainingDistance = retrieve_distance($departureCity, $arrivalCity) - $traveledDistance;
-            // Full time to travel this distance without breaks
-            $timeWithoutBreak = 2 * $timeToAccelerateOrDecelerate + $remainingDistance / convert_kmh_to_ms(90);
-            // Calculates the number of breaks to be made during the path
-            $numberOfBreak = intval($timeWithoutBreak / (2 * 3600));
+            // Recovery of the number of breaks made during the carry
+            $numberOfBreak = calculate_number_of_break($departureCity, $arrivalCity);
             // Full time to travel this distance with breaks
-            return $timeWithBreak = ($timeWithoutBreak + $numberOfBreak * 15 * 60);
+            return (2 * $timeToAccelerateOrDecelerate + (recovery_distance($departureCity, $arrivalCity) - $traveledDistance) / convert_kmh_to_ms(90)) + $numberOfBreak * 15 * 60;
         }
     }
 ?>

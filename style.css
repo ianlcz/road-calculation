@@ -4,44 +4,46 @@ html, body, input, button{
     margin: 0;
     padding: 0;
     font-family: 'Montserrat', sans-serif;
-    color: #800000;
+    color: #095228;
     overflow-y: hidden;
 }
 
 body{
-    background: radial-gradient(#FF5757, #800000) no-repeat;
+    background: radial-gradient(#11A14D, #095228) no-repeat;
     height: 100vh;
 }
 
 form{
-    margin-top: 2%;
+    margin: 2% auto 0 auto;
+    width: 32%;
     text-align: center;
     color: #FFF;
 }
+
 input[type=text]{
-    margin: 0 2% 2% 0;
-    padding: 2px;
+    padding: 2px 4px;
     text-align: center;
-    color: #800000;
+    color: #095228;
     font-size: 14px;
     font-weight: bold;
     border-radius: 10px;
-    border:2px solid #FF5757;
-    box-shadow: inset 0px 0px 2px #282C34;
+    border:2px solid #11A14D;
+    box-shadow: inset 0px 0px 4px #282C34;
 }
 
 button{
-    margin-right: 2%;
-    padding: 8px;
+    margin-top: 6%;
+    padding: 8px 16px;
     font-size: 14px;
-    border-radius: 10px;
+    border-radius: 20px;
     background: #FFF;
     border: 2px solid white;
+    cursor: pointer;
     transition-duration: 1s;
 }
 button:hover{
     color: #FFF;
-    background: #800000;
+    background: #095228;
 }
 
 table, p{
