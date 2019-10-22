@@ -12,8 +12,19 @@
         $data = explode('<div class="value">', file_get_contents('https://www.bonnesroutes.com/distance/?from=' . $departureCity . '&to=' . $arrivalCity));
         // Selection of distance data
         $data = explode('</div>', $data[3]);
-        // Return of the distance converted into float
-        return $distance = floatval($data[0]) * 1000;
+
+        // If the distance exceeds the hundreds
+        if(strlen($data[0]) > 3 AND strlen($data[0]) <= 6)
+        {
+            $dataTable = str_split($data[0]);
+            $data = $dataTable[0].$dataTable[3].$dataTable[4].$dataTable[5];
+            return floatval($data) * 1000;
+        }
+        else
+        {
+            // Return of the distance converted into float
+            return floatval($data[0]) * 1000;
+        }
     }
 
     /**

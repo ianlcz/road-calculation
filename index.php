@@ -40,7 +40,7 @@
                 </tbody>
             </table>
         <?php } else { ?>
-            <p>Eurreur: Vos villes de départ et d'arrivée sont identiques</p>
+            <p>Vos villes de départ et d'arrivée sont identiques</p>
         <?php } ?>
     <?php } ?>
     <footer>

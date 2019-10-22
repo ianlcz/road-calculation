@@ -1,9 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600');
 
 html, body, input, button{
+    margin: 0;
+    padding: 0;
     font-family: 'Montserrat', sans-serif;
     color: #800000;
-    margin: 0;
+    overflow-y: hidden;
 }
 
 body{
@@ -12,13 +14,13 @@ body{
 }
 
 form{
-    margin-top: 4%;
+    margin-top: 2%;
     text-align: center;
     color: #FFF;
 }
 input[type=text]{
-    margin: 0 2% 3% 0;
-    padding: 6px;
+    margin: 0 2% 2% 0;
+    padding: 2px;
     text-align: center;
     color: #800000;
     font-size: 14px;
@@ -42,8 +44,14 @@ button:hover{
     background: #800000;
 }
 
+table, p{
+    position: absolute;
+    top: 50%; /* poussé de la moitié de hauteur de viewport */
+    left: 50%;
+    transform: translate(-50%, -50%); /* tiré de la moitié de sa propre hauteur */
+}
+
 table{
-    margin: 40px auto 0px auto;
     padding: 40px;
     padding-right: 0px;
     border-radius: 20px;
@@ -53,16 +61,23 @@ table{
 
 th, td{
     text-align: center;
-    padding-right: 20px;
+    padding-right: 40px;
 }
 th{
     padding-bottom: 10px;
 }
 
+p{
+    color: #FFF;
+    font-weight: bold;
+}
+
 footer{
     position: absolute;
+    margin-bottom: 0;
     bottom: 0;
     width: 100%;
     text-align: center;
     color: #FFF;
+    font-size: 15px;
 }
