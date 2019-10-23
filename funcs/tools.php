@@ -9,7 +9,7 @@
     function recovery_distance(string $departureCity, string $arrivalCity):float
     {
         // Processing to extracte data from the code of the page
-        $data = explode('<div class="value">', file_get_contents('https://www.bonnesroutes.com/distance/?from=' . $departureCity . '&to=' . $arrivalCity));
+        $data = explode('<div class="value">', file_get_contents('https://www.bonnesroutes.com/distance/?from=' . city_format($departureCity) . '&to=' . city_format($arrivalCity)));
         // Selection of distance data
         $data = explode('</div>', $data[3]);
 
@@ -37,7 +37,7 @@
     /**
      * Convert speed in kilometer per hour to meter per second
      *
-     * @param float $number
+     * @param float $speed
      * @return float
      */
     function convert_kmh_to_ms(float $speed):float
@@ -45,6 +45,24 @@
         return $speed * 1000 / 3600;
     }
 
+    /**
+     * Format the city display in URL
+     *
+     * @param string $city
+     * @return string
+     */
+    function city_format(string $city):string
+    {
+        $newCity = str_replace(' ', '%20', $city);
+        return $newCity;
+    }
+
+    /**
+     * Format the time display
+     *
+     * @param float $time
+     * @return void
+     */
     function time_format(float $time)
     {
         if (intval($time / 3600) >= 24)
@@ -56,6 +74,7 @@
             return strftime("%H : %M", $time);
         }
     }
+
     /**
      * Calculate the number of breaks that the driver makes during the carry
      *

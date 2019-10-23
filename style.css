@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600');
 
-html, body, input, button{
+html,
+body,
+input,
+button {
     margin: 0;
     padding: 0;
     font-family: 'Montserrat', sans-serif;
@@ -8,52 +11,57 @@ html, body, input, button{
     overflow-y: hidden;
 }
 
-body{
+body {
     background: radial-gradient(#11A14D, #095228) no-repeat;
     height: 100vh;
 }
 
-form{
+form {
     margin: 2% auto 0 auto;
     width: 32%;
     text-align: center;
     color: #FFF;
 }
 
-input[type=text]{
+input[type=text] {
     padding: 2px 4px;
     text-align: center;
     color: #095228;
     font-size: 14px;
     font-weight: bold;
     border-radius: 10px;
-    border:2px solid #11A14D;
+    border: 2px solid #FFF;
     box-shadow: inset 0px 0px 4px #282C34;
 }
 
-button{
+button {
     margin-top: 6%;
     padding: 8px 16px;
     font-size: 14px;
     border-radius: 20px;
     background: #FFF;
-    border: 2px solid white;
+    border: 2px solid #FFF;
     cursor: pointer;
+    box-shadow: 0px 0px 4px #282C34;
     transition-duration: 1s;
 }
-button:hover{
+
+button:hover {
     color: #FFF;
     background: #095228;
 }
 
-table, p{
+table,
+p {
     position: absolute;
-    top: 50%; /* poussé de la moitié de hauteur de viewport */
+    top: 50%;
+    /* poussé de la moitié de hauteur de viewport */
     left: 50%;
-    transform: translate(-50%, -50%); /* tiré de la moitié de sa propre hauteur */
+    transform: translate(-50%, -50%);
+    /* tiré de la moitié de sa propre hauteur */
 }
 
-table{
+table {
     padding: 40px;
     padding-right: 0px;
     border-radius: 20px;
@@ -61,20 +69,22 @@ table{
     box-shadow: 0px 0px 6px #282C34;
 }
 
-th, td{
+th,
+td {
     text-align: center;
     padding-right: 40px;
 }
-th{
+
+th {
     padding-bottom: 10px;
 }
 
-p{
+p {
     color: #FFF;
     font-weight: bold;
 }
 
-footer{
+footer {
     position: absolute;
     margin-bottom: 0;
     bottom: 0;
