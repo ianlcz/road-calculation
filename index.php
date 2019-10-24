@@ -19,10 +19,8 @@
         <button type="submit" name="sendinfos" value="Calculer la temps du trajet">Calculer la temps du trajet</button>
     </form>
     <?php if(!empty($_GET['departureCity']) AND !empty($_GET['arrivalCity'])){ ?>
-
-        <?php if(!ctype_digit($_GET['departureCity']) AND !ctype_digit($_GET['arrivalCity']) AND !ctype_punct($_GET['departureCity']) AND !ctype_punct($_GET['arrivalCity'])){ ?>
-
-            <?php if(city_format($_GET['departureCity']) !== city_format($_GET['arrivalCity'])){ ?>
+        <?php if(format_city(verify_city($_GET['departureCity'])) AND format_city(verify_city($_GET['arrivalCity']))){ ?>
+            <?php if(format_city($_GET['departureCity']) !== format_city($_GET['arrivalCity'])){ ?>
                 <table>
                     <thead>
                         <tr>
@@ -38,21 +36,19 @@
                         <tr>
                             <td><?php echo $_GET['departureCity']; ?></td>
                             <td><?php echo $_GET['arrivalCity']; ?></td>
-                            <td><?php echo recovery_distance(city_format($_GET['departureCity']), city_format($_GET['arrivalCity'])) / 1000 . " km"; ?></td>
-                            <td><?php echo calculate_number_of_break(city_format($_GET['departureCity']), city_format($_GET['arrivalCity'])); ?></td>
-                            <td><?php echo calculate_number_of_break(city_format($_GET['departureCity']), city_format($_GET['arrivalCity'])) * 15; ?></td>
-                            <td><?php echo time_format(calculate_time(city_format($_GET['departureCity']), city_format($_GET['arrivalCity']))); ?></td>
+                            <td><?php echo recovery_distance(format_city($_GET['departureCity']), format_city($_GET['arrivalCity'])) / 1000 . " km"; ?></td>
+                            <td><?php echo calculate_number_of_break(format_city($_GET['departureCity']), format_city($_GET['arrivalCity'])); ?></td>
+                            <td><?php echo calculate_number_of_break(format_city($_GET['departureCity']), format_city($_GET['arrivalCity'])) * 15; ?></td>
+                            <td><?php echo time_format(calculate_time(format_city($_GET['departureCity']), format_city($_GET['arrivalCity']))); ?></td>
                         </tr>
                     </tbody>
                 </table>
             <?php } else { ?>
                 <p>Vos villes de départ et d'arrivée sont identiques</p>
             <?php } ?>
-
         <?php } else { ?>
             <p>Veuillez entrer des noms de villes</p>
         <?php } ?>
-
     <?php } ?>
     <footer>
         &copy; <?php echo strftime("%Y"); ?><span style="margin-left: 0.6rem;">Yann Le Coz</span>

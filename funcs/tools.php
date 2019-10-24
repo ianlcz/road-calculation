@@ -6,10 +6,10 @@
      * @param string $arrivalCity
      * @return float
      */
-    function recovery_distance(string $departureCity, string $arrivalCity):float
+    function recovery_distance(string $departureCity, string $arrivalCity) : float
     {
         // Processing to extracte data from the code of the page
-        $data = explode('<div class="value">', file_get_contents('https://www.bonnesroutes.com/distance/?from=' . city_format($departureCity) . '&to=' . city_format($arrivalCity)));
+        $data = explode('<div class="value">', file_get_contents('https://www.bonnesroutes.com/distance/?from=' . format_city($departureCity) . '&to=' . format_city($arrivalCity)));
         // Selection of distance data
         $data = explode('</div>', $data[3]);
 
@@ -40,9 +40,27 @@
      * @param float $speed
      * @return float
      */
-    function convert_kmh_to_ms(float $speed):float
+    function convert_kmh_to_ms(float $speed) : float
     {
         return $speed * 1000 / 3600;
+    }
+    
+    /**
+     * Verify if the text entered by the user is a city
+     *
+     * @param string $city
+     * @return boolean
+     */
+    function verify_city(string $city) : bool
+    {
+        if(strlen($city) >= 4 AND ctype_alpha($city) OR !ctype_digit($city) AND !ctype_punct($city))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     /**
@@ -51,10 +69,9 @@
      * @param string $city
      * @return string
      */
-    function city_format(string $city):string
+    function format_city(string $city) : string
     {
-        $newCity = str_replace(' ', '%20', $city);
-        return $newCity;
+        return str_replace(' ', '%20', $city);
     }
 
     /**
@@ -82,7 +99,7 @@
      * @param string $arrivalCity
      * @return integer
      */
-    function calculate_number_of_break(string $departureCity, string $arrivalCity):int
+    function calculate_number_of_break(string $departureCity, string $arrivalCity) : int
     {
         // Recovery the $timeToAccelerateOrDecelerate and $traveledDistance variables defined in the calculate_time function
         global $timeToAccelerateOrDecelerate, $traveledDistance;
@@ -101,7 +118,7 @@
      * @param string $arrivalCity
      * @return float
      */
-    function calculate_time(string $departureCity, string $arrivalCity):float
+    function calculate_time(string $departureCity, string $arrivalCity) : float
     {
         // Calculate the time needed to accelerate or deccelerate
         $timeToAccelerateOrDecelerate = convert_kmh_to_ms(90) / convert_kmh_to_ms(10) * 60;
